@@ -18,6 +18,7 @@ void setup() {
     Serial.printf("ARDUINO_LOOP_STACK_SIZE %d words (32 bit)\n", CONFIG_ARDUINO_LOOP_STACK_SIZE);
     Serial.println("----------------------------------");
     Serial.print("\n\n");
+    disableCore1WDT();
 }
 
 void loop() {
