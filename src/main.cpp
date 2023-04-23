@@ -3,13 +3,12 @@
 
 void setup() {
     Serial.begin(115200);
-    Serial.print("\n\n");
+    Serial.print("A\n\n");
     Serial.println("----------------------------------");
-    const char* chipModel  = ESP.getChipModel();
     uint8_t avMajor  = ESP_ARDUINO_VERSION_MAJOR;
     uint8_t avMinor  = ESP_ARDUINO_VERSION_MINOR;
     uint8_t avPatch  = ESP_ARDUINO_VERSION_PATCH;
-    Serial.printf("ESP32 Chip: %s\n", chipModel);
+    Serial.printf("ESP32 Chip: %s\n", ESP.getChipModel());
     Serial.printf("Arduino Version: %d.%d.%d\n", avMajor, avMinor, avPatch);
     uint8_t idfMajor = ESP_IDF_VERSION_MAJOR;
     uint8_t idfMinor = ESP_IDF_VERSION_MINOR;
