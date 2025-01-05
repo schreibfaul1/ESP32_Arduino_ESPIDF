@@ -1,5 +1,15 @@
-#include <sdkconfig.h>
-#include <Arduino.h>
+#include "Arduino.h"
+#include "Audio.h"
+#include "WiFi.h"
+
+#define I2S_DOUT      25
+#define I2S_BCLK      27
+#define I2S_LRC       26
+
+Audio audio;
+
+String ssid =     "Wolles-FRITZBOX";
+String password = "40441061073895958449";
 
 void setup() {
     Serial.begin(115200);
@@ -17,11 +27,19 @@ void setup() {
     Serial.printf("ARDUINO_LOOP_STACK_SIZE %d words (32 bit)\n", CONFIG_ARDUINO_LOOP_STACK_SIZE);
     Serial.println("----------------------------------");
     Serial.print("\n\n");
-    disableCore1WDT();
+    WiFi.begin(ssid.c_str(), password.c_str());
+    while (WiFi.status() != WL_CONNECTED) delay(1500);
+    audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
+    audio.setVolume(21); // default 0...21
+    audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println("I'm in loop");
-  vTaskDelay(5000);
+    audio.loop();
+    vTaskDelay(1);
+}
+
+// optional
+void audio_info(const char *info){
+    Serial.print("info        "); Serial.println(info);
 }
