@@ -2,9 +2,17 @@
 #include "Audio.h"
 #include "WiFi.h"
 
+#ifdef CONFIG_IDF_TARGET_ESP32
 #define I2S_DOUT      25
 #define I2S_BCLK      27
 #define I2S_LRC       26
+#endif
+
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+#define I2S_DOUT      1
+#define I2S_BCLK      2
+#define I2S_LRC       3
+#endif
 
 Audio audio;
 
