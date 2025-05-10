@@ -14,10 +14,17 @@
 #define I2S_LRC       3
 #endif
 
+#ifdef CONFIG_IDF_TARGET_ESP32P4
+#define I2S_DOUT      22
+#define I2S_BCLK      20
+#define I2S_LRC       21
+#endif
+
+
 Audio audio;
 
-String ssid =     "*****";
-String password = "*****";
+String ssid =     "Wolles-FRITZBOX";
+String password = "40441061073895958449";
 
 void setup() {
     Serial.begin(115200);
@@ -34,6 +41,8 @@ void setup() {
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
     audio.setVolume(21); // default 0...21
     audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
+    pinMode(53, OUTPUT);
+    digitalWrite(53, HIGH);
 }
 
 void loop() {
@@ -45,3 +54,4 @@ void loop() {
 void audio_info(const char *info){
     Serial.print("info        "); Serial.println(info);
 }
+
