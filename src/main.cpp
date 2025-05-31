@@ -23,8 +23,8 @@
 
 Audio audio;
 
-String ssid =     "Wolles-FRITZBOX";
-String password = "40441061073895958449";
+String ssid =     "******";
+String password = "******";
 
 void setup() {
     Serial.begin(115200);
