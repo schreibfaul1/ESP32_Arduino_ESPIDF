@@ -1,57 +1,126 @@
 #include "Arduino.h"
-#include "Audio.h"
-#include "WiFi.h"
+/*
+  This example code is in the Public Domain (or CC0 licensed, at your option.)
+  Unless required by applicable law or agreed to in writing, this
+  software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+  CONDITIONS OF ANY KIND, either express or implied.
 
-#ifdef CONFIG_IDF_TARGET_ESP32
-#define I2S_DOUT      25
-#define I2S_BCLK      27
-#define I2S_LRC       26
-#endif
+  Arduino port of https://github.com/espressif/esp-idf/tree/master/examples/bluetooth/a2dp_source
+  origin URL: https://github.com/dgm3333/Arduino_A2DP_Source
 
-#ifdef CONFIG_IDF_TARGET_ESP32S3
-#define I2S_DOUT      1
-#define I2S_BCLK      2
-#define I2S_LRC       3
-#endif
+  After connection with A2DP sink is established, the example performs the following running loop 1-2-3-4-1:
+    1. audio transmission starts and lasts for a while
+    2. audio transmission stops
+    3. disconnect with target device
+    4. reconnect to target device
+  The example implements an event loop triggered by a periodic "heart beat" timer and events from Bluetooth protocol stack callback functions.
 
-#ifdef CONFIG_IDF_TARGET_ESP32P4
-#define I2S_DOUT      22
-#define I2S_BCLK      20
-#define I2S_LRC       21
-#endif
+  For current stage, the supported audio codec in ESP32 A2DP is SBC (SubBand Coding).
+  SBC specification is in Appendix B (page 50) of the document A2DP_Spec_V1_0 (can be found with search engine, although the original is behind the Bluetooth firewall)
 
+  SBC audio stream is encoded from PCM data normally formatted as 44.1kHz sampling rate, two-channel 16-bit sample data.
+  Other SBC configurations can be supported but there is a need for additional modifications to the protocol stack.
+*/
 
-Audio audio;
+#include "Arduino.h"
+#include "a2dp_source.h"
+#include <driver/i2s.h>
 
-String ssid =     "Wolles-FRITZBOX";
-String password = "40441061073895958449";
+#define RX_I2S_DIN    25    // connect with I2S microphone pin SO   (signal out)
+#define RX_I2S_BCLK   27    // connect with I2S microphone pin SCK  (bit clock)
+#define RX_I2S_LRC    26    // connect with I2S microphone pin WS   (word select)
 
-void setup() {
+char BT_SINK_NAME[]   = "Manhattan-165327"; // set your sink devicename here
+char BT_SINK_PIN[]    = "1234";             // sink pincode
+char BT_DEVICE_NAME[] = "ESP_A2DP_SRC";     // source devicename
+
+const i2s_port_t I2S_PORT_RX = I2S_NUM_0;
+const uint32_t   sample_rate = 48000;
+const uint16_t   buf_len     = 1024;
+size_t bytes_written = 0;
+char readBuff[buf_len];
+uint16_t buffSize;
+uint8_t buffStat;
+uint8_t gain = 14;   // reduce volume -> increase gain
+
+enum : uint8_t {BUFF_FULL, BUFF_EMPTY};
+
+//---------------------------------------------------------------------------------------------------------------------
+void i2s_install(){
+    /* RX: I2S_NUM_1 */
+        i2s_config_t i2s_config_rx = {
+        .mode = (i2s_mode_t) (I2S_MODE_SLAVE | I2S_MODE_RX), // Only TX
+        .sample_rate = sample_rate,
+        .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT, // Only 8-bit DAC support
+        .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT, // 2-channels
+        .communication_format = (i2s_comm_format_t) I2S_COMM_FORMAT_STAND_I2S,
+        .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1, // Interrupt level 1
+        .dma_buf_count = 16,                      // number of buffers, 128 max.
+        .dma_buf_len = 256,                       // size of each buffer
+        .use_apll             = true,
+        .tx_desc_auto_clear   = true,   // new in V1.0.1
+        .fixed_mclk           = I2S_PIN_NO_CHANGE,
+        };
+
+        i2s_pin_config_t pin_config_rx = {
+            .bck_io_num   = RX_I2S_BCLK,
+            .ws_io_num    = RX_I2S_LRC,
+            .data_out_num = I2S_PIN_NO_CHANGE,
+            .data_in_num  = RX_I2S_DIN
+        };
+
+        i2s_driver_install(I2S_PORT_RX, &i2s_config_rx, 0, NULL);
+        i2s_set_pin(I2S_PORT_RX, &pin_config_rx);
+}
+//---------------------------------------------SETUP--------------------------------------------------------------------
+void setup(){
     Serial.begin(115200);
-    Serial.print("A\n\n");
-    Serial.println("----------------------------------");
-    Serial.printf("ESP32 Chip: %s\n", ESP.getChipModel());
-    Serial.printf("Arduino Version: %d.%d.%d\n", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
-    Serial.printf("ESP-IDF Version: %d.%d.%d\n", ESP_IDF_VERSION_MAJOR, ESP_IDF_VERSION_MINOR, ESP_IDF_VERSION_PATCH);
-    Serial.printf("ARDUINO_LOOP_STACK_SIZE %d words (32 bit)\n", CONFIG_ARDUINO_LOOP_STACK_SIZE);
-    Serial.println("----------------------------------");
-    Serial.print("\n\n");
-    WiFi.begin(ssid.c_str(), password.c_str());
-    while (WiFi.status() != WL_CONNECTED) delay(1500);
-    audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
-    audio.setVolume(21); // default 0...21
-    audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
-    pinMode(53, OUTPUT);
-    digitalWrite(53, HIGH);
+    i2s_install();
+    buffStat = BUFF_EMPTY;
+    log_i("free heap %i", esp_get_free_heap_size());
+    a2dp_source_init(BT_SINK_NAME, BT_SINK_PIN);
+    log_i("free heap %i", esp_get_free_heap_size());
 }
 
+//----------------------------------------------LOOP--------------------------------------------------------------------
 void loop() {
-    audio.loop();
-    vTaskDelay(1);
+    bt_loop();
+//    char *buf_ptr_read1  = readBuff + 4; // connect L/R with VDD
+    char *buf_ptr_read1  = readBuff;     // connect L/R with GND
+    char *buf_ptr_write1 = readBuff;
+
+    if(buffStat == BUFF_EMPTY) {
+        size_t bytes_read = 0;
+        while(bytes_read == 0) {
+            i2s_read(I2S_PORT_RX, readBuff, buf_len, &bytes_read, portMAX_DELAY);
+        }
+        log_w("%i", bytes_read);
+        uint32_t samples_read = bytes_read / 2 / (I2S_BITS_PER_SAMPLE_16BIT / 8);
+
+
+        buffSize = samples_read * 2;// * (I2S_BITS_PER_SAMPLE_16BIT / 8);
+        // }
+        log_w("%i", samples_read);
+        buffStat = BUFF_FULL;
+    }
+}
+//---------------------------------------------EVENTS-------------------------------------------------------------------
+int32_t bt_data(uint8_t *data, int32_t len, uint32_t* sr){ // BT data event
+    *sr = 48000;
+
+    if (len < 0 || data == NULL) {
+        buffStat = BUFF_EMPTY;
+        return 0;
+    }
+    if(!buffSize) return 0;
+    memcpy(data, readBuff, buffSize);
+log_w("%i %i %i", data[0], data[1], data[2]);
+    log_w("%i", buffSize);
+    buffStat = BUFF_EMPTY;
+    return buffSize;
 }
 
-// optional
-void audio_info(const char *info){
-    Serial.print("info        "); Serial.println(info);
+void bt_info(const char* info){
+    Serial.printf("bt_info: %s\n", info);
+    log_i("%s", info);
 }
-
