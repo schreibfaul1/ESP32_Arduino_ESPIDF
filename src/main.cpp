@@ -9,9 +9,9 @@
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-#define I2S_DOUT      1
-#define I2S_BCLK      2
-#define I2S_LRC       3
+#define I2S_DOUT      9
+#define I2S_BCLK      3
+#define I2S_LRC       1
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32P4
@@ -20,15 +20,21 @@
 #define I2S_LRC       21
 #endif
 
-
-Audio audio;
-
 String ssid =     "******";
 String password = "******";
 
+Audio* audio;
+
+void my_audio_info(Audio::msg_t m) {
+    Serial.printf("%s: %s\n", m.s, m.msg);
+}
+
+
 void setup() {
     Serial.begin(115200);
-    Serial.print("A\n\n");
+    audio = new Audio(0);
+    Audio::audio_info_callback = my_audio_info;
+    Serial.print("\n\n");
     Serial.println("----------------------------------");
     Serial.printf("ESP32 Chip: %s\n", ESP.getChipModel());
     Serial.printf("Arduino Version: %d.%d.%d\n", ESP_ARDUINO_VERSION_MAJOR, ESP_ARDUINO_VERSION_MINOR, ESP_ARDUINO_VERSION_PATCH);
@@ -38,20 +44,14 @@ void setup() {
     Serial.print("\n\n");
     WiFi.begin(ssid.c_str(), password.c_str());
     while (WiFi.status() != WL_CONNECTED) delay(1500);
-    audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
-    audio.setVolume(21); // default 0...21
-    audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
-    pinMode(53, OUTPUT);
-    digitalWrite(53, HIGH);
+    audio->setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
+    audio->setVolume(5); // default 0...21
+    //audio->connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
+    audio->connecttohost("https://live.m6radio.quortex.io/webpHJPXnXrN7B6J7Q8mcqmxP/webradio/rtl/202/audio-64000/index.m3u8");
 }
 
 void loop() {
-    audio.loop();
+    audio->loop();
     vTaskDelay(1);
-}
-
-// optional
-void audio_info(const char *info){
-    Serial.print("info        "); Serial.println(info);
 }
 
