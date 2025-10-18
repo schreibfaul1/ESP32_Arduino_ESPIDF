@@ -1,7 +1,6 @@
 #include "Arduino.h"
 #include "Audio.h"
 #include "WiFi.h"
-#include "psram_unique_ptr.hpp"
 
 #ifdef CONFIG_IDF_TARGET_ESP32
 #define I2S_DOUT      25
@@ -21,8 +20,8 @@
 #define I2S_LRC       21
 #endif
 
-String ssid =     "******";
-String password = "******";
+String ssid =     "Wolles-FRITZBOX";
+String password = "40441061073895958449";
 
 Audio audio;
 
@@ -44,10 +43,10 @@ void setup() {
     WiFi.begin(ssid.c_str(), password.c_str());
     while (WiFi.status() != WL_CONNECTED) delay(1500);
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
-    audio.setVolume(5); // default 0...21
-  //  audio->connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
-  //  audio->connecttohost("http://secure.live-streams.nl/flac.flac"); // flac
-    audio.connecttohost("http://stream.revma.ihrhls.com/zc4882/hls.m3u8");
+    audio.setVolume(20); // default 0...21
+  //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
+    audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
+  //  audio.connecttohost("http://stream.revma.ihrhls.com/zc4882/hls.m3u8");
 
 }
 
