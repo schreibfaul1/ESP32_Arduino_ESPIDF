@@ -20,8 +20,8 @@
 #define I2S_LRC       21
 #endif
 
-String ssid =     "Wolles-FRITZBOX";
-String password = "40441061073895958449";
+String ssid =     "*****";
+String password = "*****";
 
 Audio audio;
 
@@ -44,8 +44,8 @@ void setup() {
     while (WiFi.status() != WL_CONNECTED) delay(1500);
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
     audio.setVolume(20); // default 0...21
-  //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
-    audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
+    audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
+  //  audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
   //  audio.connecttohost("http://stream.revma.ihrhls.com/zc4882/hls.m3u8");
 
 }
