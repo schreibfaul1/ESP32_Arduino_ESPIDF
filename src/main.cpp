@@ -20,12 +20,12 @@
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32P4
-#define I2S_DOUT      22
-#define I2S_BCLK      20
-#define I2S_LRC       21
-#define SD_MMC_D0     11
-#define SD_MMC_CLK    13
-#define SD_MMC_CMD    14
+#define I2S_DOUT      23
+#define I2S_BCLK      24
+#define I2S_LRC       25
+#define SD_MMC_D0     39
+#define SD_MMC_CLK    43
+#define SD_MMC_CMD    44
 #endif
 
 String ssid =     "*****";
@@ -58,7 +58,7 @@ void setup() {
   //  audio.connecttoFS(SD_MMC, myPlaylist[0].c_str());
   //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
   //  audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
-  //  audio.connecttohost("http://stream.revma.ihrhls.com/zc4882/hls.m3u8");
+     audio.connecttohost("http://stream.revma.ihrhls.com/zc4882/hls.m3u8");
 
 }
 
