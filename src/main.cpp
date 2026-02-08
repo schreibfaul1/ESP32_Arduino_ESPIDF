@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include "WiFiMulti.h"
 #include "Audio.h"
 
 #ifdef CONFIG_IDF_TARGET_ESP32
@@ -32,6 +33,7 @@ String ssid =     "*****";
 String password = "*****";
 
 Audio audio;
+WiFiMulti wifiMulti;
 
 void my_audio_info(Audio::msg_t m) {
     Serial.printf("%s: %s\n", m.s, m.msg);
@@ -48,17 +50,18 @@ void setup() {
     Serial.printf("ARDUINO_LOOP_STACK_SIZE %d words (32 bit)\n", CONFIG_ARDUINO_LOOP_STACK_SIZE);
     Serial.println("----------------------------------");
     Serial.print("\n\n");
-    WiFi.begin(ssid.c_str(), password.c_str());
+    wifiMulti.addAP(ssid.c_str(), password.c_str());
+    wifiMulti.run(); // if there are multiple access points, use the strongest one
     while (WiFi.status() != WL_CONNECTED) delay(1500);
     pinMode(SD_MMC_D0, INPUT_PULLUP);
-    SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
-    SD_MMC.begin("/sdcard", true);
+    // SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
+    // SD_MMC.begin("/sdcard", true);
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
     audio.setVolume(20); // default 0...21
   //  audio.connecttoFS(SD_MMC, myPlaylist[0].c_str());
   //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
   //  audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
-     audio.connecttohost("http://stream.revma.ihrhls.com/zc4882/hls.m3u8");
+    audio.connecttohost("http://bcast.vigormultimedia.com:8888/sjcomplflac");
 
 }
 
