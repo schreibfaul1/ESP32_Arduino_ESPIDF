@@ -57,8 +57,8 @@ void setup() {
     // SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
     // SD_MMC.begin("/sdcard", true);
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
-    audio.setVolume(20); // default 0...21
-  //  audio.connecttoFS(SD_MMC, myPlaylist[0].c_str());
+    audio.setVolume(12); // default 0...21
+  //  audio.connecttoFS(SD_MMC, "/test.mp3");
   //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
   //  audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
     audio.connecttohost("http://bcast.vigormultimedia.com:8888/sjcomplflac");
