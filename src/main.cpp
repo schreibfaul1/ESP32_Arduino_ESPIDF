@@ -1,3 +1,20 @@
+
+/* Program to update the FW of the WiFI chip ESP32C6 on an ESP32-P4 board
+
+1) Select and download the appropriate FW version from: https://esphome.github.io/esp-hosted-firmware/manifest/esp32c6.json
+
+2) Paste the downloaded file into the "/data" folder
+
+3) Build + Upload
+
+4) goto PIOARDUINO: "Upload Filesystem Image"
+
+5) Reset
+
+to erase everything close the serial terminal and go to PIOARDUINO: "Erase Flash"
+
+*/
+
 #include "Arduino.h"
 #include "FS.h"
 #include "LittleFS.h"
@@ -13,27 +30,26 @@
 esp_hosted_coprocessor_fwver_t host_version = {0}, slave_version = {0};
 esp_err_t                      ret = ESP_OK;
 
+// —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 static void printLittleFSContents() {
-    DIR *dir = opendir("/littlefs");
+    DIR* dir = opendir("/littlefs");
     if (dir == nullptr) {
-        Serial.println("Konnte /littlefs nicht oeffnen.");
+        Serial.println("can't open /littlefs.");
         return;
     }
 
-    Serial.println("Inhalt von /littlefs:");
+    Serial.println("content of /littlefs:");
 
-    struct dirent *entry;
-    bool foundFile = false;
+    struct dirent* entry;
+    bool           foundFile = false;
     while ((entry = readdir(dir)) != nullptr) {
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-            continue;
-        }
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) { continue; }
 
         foundFile = true;
         String path = String("/") + entry->d_name;
-        File file = LittleFS.open(path, "r");
+        File   file = LittleFS.open(path, "r");
         if (!file) {
-            Serial.printf("  %s (konnte nicht geoeffnet werden)\n", path.c_str());
+            Serial.printf("  %s (could not be opened)\n", path.c_str());
             continue;
         }
 
@@ -41,13 +57,11 @@ static void printLittleFSContents() {
         file.close();
     }
 
-    if (!foundFile) {
-        Serial.println("  Keine Dateien gefunden.");
-    }
+    if (!foundFile) { Serial.println("  No files found."); }
 
     closedir(dir);
 }
-
+// —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 int compare_versions() {
 
     host_version.major1 = ESP_HOSTED_VERSION_MAJOR_1;
@@ -70,7 +84,7 @@ int compare_versions() {
         return 1; // Slave newer, host needs upgrade
     }
 }
-
+// —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 int perform_slave_ota() {
     uint8_t delete_after_flash = 0;
     Serial.printf("Starting OTA via LittleFS\n");
@@ -79,7 +93,7 @@ int perform_slave_ota() {
 #endif
     return ota_littlefs_perform(delete_after_flash);
 }
-
+// —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 void setup() {
     Serial.begin(115200);
     vTaskDelay(1000);
@@ -92,16 +106,7 @@ void setup() {
     Serial.println("----------------------------------");
     Serial.print("\n\n");
 
-    if (!LittleFS.begin(false, "/littlefs", 10, "storage")) {
-        Serial.println("LittleFS Mount Failed");
-        return;
-    }
-    if (LittleFS.exists("/esp32c6.bin")) {
-        Serial.println("Datei existiert.");
-    } else {
-        Serial.println("Datei nicht gefunden.");
-    }
-    printLittleFSContents();
+    if (!LittleFS.begin(false, "/littlefs", 10, "storage")) printLittleFSContents();
     LittleFS.end();
 
     // Step 1: Initialize system
@@ -114,7 +119,7 @@ void setup() {
     Serial.printf("ESP-Hosted initialized successfully\n");
 
     // Step 2: Check version compatibility
-    if (compare_versions() == 0) {
+    if (compare_versions() <= 0) {
         Serial.printf("Versions compatible - OTA not required\n");
         return;
     }
@@ -122,7 +127,7 @@ void setup() {
     // Step 3: Perform OTA update
     Serial.printf("Starting slave OTA update...\n");
     ret = perform_slave_ota();
-    Serial.printf("ret: %i\n", ret);
+    if(ret !=1) Serial.printf("Error %i\n\n", ret);
 }
 
 void loop() {
