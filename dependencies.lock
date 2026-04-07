@@ -24,7 +24,7 @@ dependencies:
       type: service
     version: 1.7.0
   espressif/esp_hosted:
-    component_hash: 35628bdf316d4cb4f7a918bdcef3fe8e87ccd5808f4b2f042b296adb59b00a27
+    component_hash: e23eb702781c804a62909e5394da0641a2bff9adccec6673a7bff60ce8c8b756
     dependencies:
     - name: idf
       require: private
@@ -32,7 +32,7 @@ dependencies:
     source:
       registry_url: https://components.espressif.com/
       type: service
-    version: 2.12.2
+    version: 2.12.3
   espressif/esp_modem:
     component_hash: 07b6ca85dc0c1edbcd76f650005c74067001db138db6bfa106bf05567adca4af
     dependencies:
@@ -54,7 +54,7 @@ dependencies:
       type: service
     version: 1.1.2
   espressif/esp_wifi_remote:
-    component_hash: ce04a94a92323bf28609c94519ee3173d140b20abc49b1daceb23eb262e1e8e0
+    component_hash: 1e71e4a302ac61a67f854df0e3e2f0818ba7d85c30f0cada628270ee5ff17603
     dependencies:
     - name: espressif/esp_hosted
       registry_url: https://components.espressif.com
@@ -72,7 +72,7 @@ dependencies:
     source:
       registry_url: https://components.espressif.com/
       type: service
-    version: 1.4.1
+    version: 1.5.0
   espressif/lan867x:
     component_hash: 651c9d6e3d96acb08bd5066144b12a12e94df0a6241127a0538d8680689de2c4
     dependencies:
@@ -111,19 +111,19 @@ dependencies:
       type: service
     version: 1.9.1
   espressif/wifi_remote_over_eppp:
-    component_hash: ac4d13625cc9f88597cd612d2758580fac287d8ec731b606f2a0720d28cda6cd
+    component_hash: 06d8bc15348bbd21f1390daace36ed5adcf6026c93c5b69decc55fa04df2711a
     dependencies:
+    - name: idf
+      require: private
+      version: '>=5.3'
     - name: espressif/eppp_link
       registry_url: https://components.espressif.com
       require: private
       version: '>=0.1'
-    - name: idf
-      require: private
-      version: '>=5.3'
     source:
       registry_url: https://components.espressif.com
       type: service
-    version: 0.3.1
+    version: 0.3.2
   idf:
     source:
       type: idf
