@@ -29,9 +29,6 @@
 #define SD_MMC_CMD    44
 #endif
 
-String ssid =     "*****";
-String password = "*****";
-
 Audio audio;
 WiFiMulti wifiMulti;
 
@@ -50,7 +47,7 @@ void setup() {
     Serial.printf("ARDUINO_LOOP_STACK_SIZE %d words (32 bit)\n", CONFIG_ARDUINO_LOOP_STACK_SIZE);
     Serial.println("----------------------------------");
     Serial.print("\n\n");
-    wifiMulti.addAP(ssid.c_str(), password.c_str());
+    wifiMulti.addAP(WIFI_SSID, WIFI_PASS);
     wifiMulti.run(); // if there are multiple access points, use the strongest one
     while (WiFi.status() != WL_CONNECTED) delay(1500);
     pinMode(SD_MMC_D0, INPUT_PULLUP);
