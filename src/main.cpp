@@ -38,6 +38,7 @@ void my_audio_info(Audio::msg_t m) {
 
 void setup() {
     Serial.begin(115200);
+    audio.settings.DMA_FRAME_NUM = 192;
     Audio::audio_info_callback = my_audio_info;
     Serial.print("\n\n");
     Serial.println("----------------------------------");
@@ -51,14 +52,15 @@ void setup() {
     wifiMulti.run(); // if there are multiple access points, use the strongest one
     while (WiFi.status() != WL_CONNECTED) delay(1500);
     pinMode(SD_MMC_D0, INPUT_PULLUP);
-    // SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
-    // SD_MMC.begin("/sdcard", true);
+    SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
+    SD_MMC.begin("/sdcard", true);
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
     audio.setVolume(12); // default 0...21
+
   //  audio.connecttoFS(SD_MMC, "/test.mp3");
-  //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
+    audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
   //  audio.connecttohost("http://stream.danubiusradio.hu:8091/danubius_HiFi"); // flac
-    audio.connecttohost("http://bcast.vigormultimedia.com:8888/sjcomplflac");
+  //  audio.connecttohost("http://bcast.vigormultimedia.com:8888/sjcomplflac");
 
 }
 
@@ -66,4 +68,3 @@ void loop() {
     audio.loop();
     vTaskDelay(1);
 }
-
