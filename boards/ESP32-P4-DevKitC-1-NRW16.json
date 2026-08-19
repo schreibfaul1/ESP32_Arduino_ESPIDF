@@ -12,7 +12,7 @@
     "variant": "esp32p4"
   },
   "arduino": {
-    "partitions": "default_32MB.csv"
+    "partitions": "default_16MB.csv"
   },
   "connectivity": [
     "bluetooth",
@@ -27,9 +27,9 @@
   ],
   "name": "Espressif ESP32-P4 Function EV Board",
   "upload": {
-    "flash_size": "32MB",
+    "flash_size": "16MB",
     "maximum_ram_size": 512000,
-    "maximum_size": 33554432,
+    "maximum_size": 16777216,
     "require_upload_port": true,
     "speed": 1500000
   },
