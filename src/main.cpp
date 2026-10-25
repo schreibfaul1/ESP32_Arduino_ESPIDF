@@ -70,8 +70,8 @@ void setup() {
     // audio.connecttohost("http://icecast.radiofrance.fr/franceinfo-lofi.aac");
     //    audio.connecttohost("https://streaming.nrjaudio.fm/oua8a3w2dqao?origine=playernostalgie&aw_0_req.userConsentV2=&aw_0_1st.station=");
     // audio.connecttohost("https://air.pc.cdn.bitgravity.com/air/live/pbaudio001/playlist.m3u8");
-    //  audio.connecttohost("https://rfienchinois64k.ice.infomaniak.ch/rfienchinois-64.mp3");
-    audio.connecttohost("http://icecast6.play.cz/radio-xaver.aac");
+    audio.connecttohost("https://rfienchinois64k.ice.infomaniak.ch/rfienchinois-64.mp3");
+    // audio.connecttohost("http://icecast6.play.cz/radio-xaver.aac");
 }
 
 void loop() {
