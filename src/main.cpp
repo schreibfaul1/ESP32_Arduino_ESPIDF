@@ -32,12 +32,12 @@
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S31
-    #define I2S_DOUT   23
-    #define I2S_BCLK   24
-    #define I2S_LRC    25
-    #define SD_MMC_D0  39
-    #define SD_MMC_CLK 43
-    #define SD_MMC_CMD 44
+    #define I2S_DOUT   44
+    #define I2S_BCLK   45
+    #define I2S_LRC    46
+    #define SD_MMC_D0  47
+    #define SD_MMC_CLK 48
+    #define SD_MMC_CMD 49
 #endif
 
 Audio     audio;
@@ -66,8 +66,8 @@ void setup() {
     wifiMulti.run(); // if there are multiple access points, use the strongest one
     while (WiFi.status() != WL_CONNECTED) delay(1500);
     pinMode(SD_MMC_D0, INPUT_PULLUP);
-    SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
-    SD_MMC.begin("/sdcard", true);
+//    SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
+//    SD_MMC.begin("/sdcard", true);
     // audio.settings.SPECTRUM = true;
     audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
     audio.setVolume(12); // default 0...21
@@ -79,8 +79,9 @@ void setup() {
     // audio.connecttohost("http://icecast.radiofrance.fr/franceinfo-lofi.aac");
     //    audio.connecttohost("https://streaming.nrjaudio.fm/oua8a3w2dqao?origine=playernostalgie&aw_0_req.userConsentV2=&aw_0_1st.station=");
     // audio.connecttohost("https://air.pc.cdn.bitgravity.com/air/live/pbaudio001/playlist.m3u8");
-    audio.connecttohost("https://rfienchinois64k.ice.infomaniak.ch/rfienchinois-64.mp3");
+    // audio.connecttohost("https://rfienchinois64k.ice.infomaniak.ch/rfienchinois-64.mp3");
     // audio.connecttohost("http://icecast6.play.cz/radio-xaver.aac");
+    audio.connecttohost("http://0n-70s.radionetz.de/0n-70s.mp3");
 }
 
 void loop() {

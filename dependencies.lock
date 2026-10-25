@@ -1,4 +1,14 @@
 dependencies:
+  chmorgan/esp-libhelix-mp3:
+    component_hash: cbb76089dc2c5749f7b470e2e70aedc44c9da519e04eb9a67d4c7ec275229e53
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.1.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.0.3
   espressif/cjson:
     component_hash: e788323270d90738662d66fffa910bfe1fba019bba087f01557e70c40485b469
     dependencies:
@@ -84,6 +94,7 @@ dependencies:
       type: service
     version: 1.22.1
 direct_dependencies:
+- chmorgan/esp-libhelix-mp3
 - espressif/cjson
 - espressif/dm9051
 - espressif/esp-dsp
@@ -93,6 +104,6 @@ direct_dependencies:
 - espressif/w5500
 - idf
 - joltwallet/littlefs
-manifest_hash: 435d4d9b184a5e0a62c8b5960a7de81a425e0b71d491ea6458df68834ab32e74
+manifest_hash: 71ff2b05cf1b223b3edd6e877c9adc373e52709dcf9cd322ba151f74947e16f7
 target: esp32s31
 version: 3.0.0
