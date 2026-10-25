@@ -1,3 +1,5 @@
+# 💥💥💥💥💥 💥💥💥💥💥   esp32p4_es/sdkconfig.changes   💥💥💥💥💥 💥💥💥💥💥
+#
 # default:
 CONFIG_IDF_EXPERIMENTAL_FEATURES=y
 CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
@@ -82,6 +84,7 @@ CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC=y
 CONFIG_MBEDTLS_ASYMMETRIC_CONTENT_LEN=y
 CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN=16384
 CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN=16348
+CONFIG_MBEDTLS_THREADING_C=n
 # ——————————————————————————————————————————————————————————————————————————————
 #
 # Websocket
@@ -98,7 +101,7 @@ CONFIG_LCD_RGB_RESTART_IN_VSYNC=y
 #
 # ESP System Settings
 #
-CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_400=y
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_360=y
 # ——————————————————————————————————————————————————————————————————————————————
 #
 # FAT Filesystem support
