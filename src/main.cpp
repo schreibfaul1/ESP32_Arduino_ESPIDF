@@ -31,6 +31,15 @@
     #define SD_MMC_CMD 44
 #endif
 
+#ifdef CONFIG_IDF_TARGET_ESP32S31
+    #define I2S_DOUT   23
+    #define I2S_BCLK   24
+    #define I2S_LRC    25
+    #define SD_MMC_D0  39
+    #define SD_MMC_CLK 43
+    #define SD_MMC_CMD 44
+#endif
+
 Audio     audio;
 WiFiMulti wifiMulti;
 uint32_t  t;
