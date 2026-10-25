@@ -1,7 +1,15 @@
 .pio
 .vscode
 .env
+.cache
+platformio_override.ini
 build
+build_log.txt
+build_log_full.txt
 logs
 managed_components
-platformio_override.ini
+dependencies.lock
+sdkconfig.esp32
+sdkconfig.esp32s3
+sdkconfig.esp32p4
+sdkconfig.esp32p4_es

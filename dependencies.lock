@@ -9,8 +9,28 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 1.0.3
+  espressif/cjson:
+    component_hash: e788323270d90738662d66fffa910bfe1fba019bba087f01557e70c40485b469
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.7.19~2
+  espressif/dm9051:
+    component_hash: 52d13af7181a1d7cc2ca2958e640e395a1c825a8d6467540a526b8b7f115bdb4
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=6.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.1.1
   espressif/eppp_link:
-    component_hash: 04f7f31868b8ae6014c96132740a192d09611a6e46aaa7038c865ffc7e26b38f
+    component_hash: c1369b37f2b0b427b198ae14e07e7547d3da92b95fe4dc7f949e5de560b35f21
     dependencies:
     - name: espressif/esp_serial_slave_link
       registry_url: https://components.espressif.com
@@ -22,7 +42,7 @@ dependencies:
     source:
       registry_url: https://components.espressif.com
       type: service
-    version: 1.1.5
+    version: 1.1.6
   espressif/esp-dsp:
     component_hash: ed9ac175b14e0414399a2b33c525579414b5bad19a2a67b12ea212def96f9a98
     dependencies:
@@ -34,7 +54,7 @@ dependencies:
       type: service
     version: 1.8.2
   espressif/esp_hosted:
-    component_hash: 8ca10092db3e8c8122540d907ab705805a269377d31192f087ba1def2f5f4f91
+    component_hash: 0dbfbec0c1cbb1bb854b16aa66457bb6b70debf677903134c769ef5874669803
     dependencies:
     - name: idf
       require: private
@@ -42,7 +62,7 @@ dependencies:
     source:
       registry_url: https://components.espressif.com/
       type: service
-    version: 2.12.12
+    version: 2.13.1
   espressif/esp_modem:
     component_hash: 475c2185273ddedff2bb0d21a8ab196a9d0ef60595f73d634edf2d8be03a5f54
     dependencies:
@@ -64,7 +84,7 @@ dependencies:
       type: service
     version: 1.1.2
   espressif/esp_wifi_remote:
-    component_hash: 50d3beaf95c0bc47d0fcf56752beaf3cbaae981fd8c3b74d6890b45d8be689fe
+    component_hash: faa185898a843b9d7d0456e4094a3b5f1491a48ddd57ce0e5179e13ac6243f2c
     dependencies:
     - name: espressif/esp_hosted
       registry_url: https://components.espressif.com
@@ -82,7 +102,17 @@ dependencies:
     source:
       registry_url: https://components.espressif.com/
       type: service
-    version: 1.6.4
+    version: 1.6.5
+  espressif/ksz8851snl:
+    component_hash: 248c4eafb0359941810a304f197ec9c3a5a898a89d18a12dae29343ad869f6bd
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=6.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.2.0
   espressif/lan867x:
     component_hash: 88bcd9834f0ddd780c1dbed3b9135d03edd00e76dadfd70b91410a524cc5e85a
     dependencies:
@@ -121,6 +151,16 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 1.11.3
+  espressif/w5500:
+    component_hash: e6e47022a1f509d1d1197652a554aea84a8cd4d99161061e187ecf4b78a7f6ca
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=6.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.0.1
   espressif/wifi_remote_over_eppp:
     component_hash: 1fd6968af20f0b19e421f6b519b0a8caf81d689afc3783b564c28559e45f66ef
     dependencies:
@@ -138,7 +178,7 @@ dependencies:
   idf:
     source:
       type: idf
-    version: 5.5.4
+    version: 6.1.0
   joltwallet/littlefs:
     component_hash: 01faa388c6305fe77fd6962cda6171e753033458f24f8fae9e9d932e3d817a4c
     dependencies:
@@ -151,14 +191,18 @@ dependencies:
     version: 1.22.1
 direct_dependencies:
 - chmorgan/esp-libhelix-mp3
+- espressif/cjson
+- espressif/dm9051
 - espressif/esp-dsp
 - espressif/esp_hosted
 - espressif/esp_modem
 - espressif/esp_wifi_remote
+- espressif/ksz8851snl
 - espressif/lan867x
 - espressif/mdns
+- espressif/w5500
 - idf
 - joltwallet/littlefs
-manifest_hash: 76d1b96058138fc77d9b61b942729271483c804d1cb6dd990f5f41da04e88e9f
+manifest_hash: 71ff2b05cf1b223b3edd6e877c9adc373e52709dcf9cd322ba151f74947e16f7
 target: esp32p4
-version: 2.0.0
+version: 3.0.0
