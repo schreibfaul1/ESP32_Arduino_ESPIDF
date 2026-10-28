@@ -9,26 +9,6 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 1.0.3
-  espressif/cjson:
-    component_hash: e788323270d90738662d66fffa910bfe1fba019bba087f01557e70c40485b469
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=5.0'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.7.19~2
-  espressif/dm9051:
-    component_hash: 52d13af7181a1d7cc2ca2958e640e395a1c825a8d6467540a526b8b7f115bdb4
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=6.0'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.1.1
   espressif/esp-dsp:
     component_hash: ed9ac175b14e0414399a2b33c525579414b5bad19a2a67b12ea212def96f9a98
     dependencies:
@@ -49,16 +29,34 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 2.0.2
-  espressif/ksz8851snl:
-    component_hash: 248c4eafb0359941810a304f197ec9c3a5a898a89d18a12dae29343ad869f6bd
+  espressif/lan867x:
+    component_hash: 88bcd9834f0ddd780c1dbed3b9135d03edd00e76dadfd70b91410a524cc5e85a
     dependencies:
+    - name: espressif/lan86xx_common
+      registry_url: https://components.espressif.com
+      require: private
+      version: '*'
     - name: idf
       require: private
-      version: '>=6.0'
+      version: '>=5.3'
     source:
       registry_url: https://components.espressif.com/
       type: service
-    version: 1.2.0
+    targets:
+    - esp32
+    - esp32p4
+    - esp32s31
+    version: 2.1.0
+  espressif/lan86xx_common:
+    component_hash: 1045dc16e9eaa23c8f94ebd012e4ccc9087e85323c39f870b116391f27196914
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.2'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.0.1
   espressif/mdns:
     component_hash: e81ca7a7f53ea34e78274df054da692c272e1315572876b237b1748e267c013b
     dependencies:
@@ -69,20 +67,10 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 1.11.3
-  espressif/w5500:
-    component_hash: e6e47022a1f509d1d1197652a554aea84a8cd4d99161061e187ecf4b78a7f6ca
-    dependencies:
-    - name: idf
-      require: private
-      version: '>=6.0'
-    source:
-      registry_url: https://components.espressif.com/
-      type: service
-    version: 1.0.1
   idf:
     source:
       type: idf
-    version: 6.1.0
+    version: 5.5.5
   joltwallet/littlefs:
     component_hash: 01faa388c6305fe77fd6962cda6171e753033458f24f8fae9e9d932e3d817a4c
     dependencies:
@@ -95,15 +83,12 @@ dependencies:
     version: 1.22.1
 direct_dependencies:
 - chmorgan/esp-libhelix-mp3
-- espressif/cjson
-- espressif/dm9051
 - espressif/esp-dsp
 - espressif/esp_modem
-- espressif/ksz8851snl
+- espressif/lan867x
 - espressif/mdns
-- espressif/w5500
 - idf
 - joltwallet/littlefs
-manifest_hash: 71ff2b05cf1b223b3edd6e877c9adc373e52709dcf9cd322ba151f74947e16f7
-target: esp32s31
-version: 3.0.0
+manifest_hash: f7b13fe326bc0904b3a0dd36c0fde97de6b8905f2c753a87e0b7c5ddb0797ac2
+target: esp32
+version: 2.0.0

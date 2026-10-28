@@ -77,11 +77,14 @@ void setup() {
     // audio.connecttohost("https://s1.knixx.fm/dein_webradio_512.opus?_=n3omm7iqj6dctcryodwuwv");
     // audio.connecttohost("http://amp1.cesnet.cz:8000/cro2-256.ogg");
     // audio.connecttohost("http://icecast.radiofrance.fr/franceinfo-lofi.aac");
-    //    audio.connecttohost("https://streaming.nrjaudio.fm/oua8a3w2dqao?origine=playernostalgie&aw_0_req.userConsentV2=&aw_0_1st.station=");
+        audio.connecttohost("https://streaming.nrjaudio.fm/oua8a3w2dqao?origine=playernostalgie&aw_0_req.userConsentV2=&aw_0_1st.station=");
     // audio.connecttohost("https://air.pc.cdn.bitgravity.com/air/live/pbaudio001/playlist.m3u8");
     // audio.connecttohost("https://rfienchinois64k.ice.infomaniak.ch/rfienchinois-64.mp3");
     // audio.connecttohost("http://icecast6.play.cz/radio-xaver.aac");
-    audio.connecttohost("http://0n-70s.radionetz.de/0n-70s.mp3");
+    // audio.connecttohost("http://0n-70s.radionetz.de/0n-70s.mp3");
+
+    audio.settings.BT_DEV_NANE = " Pebble V3";
+    audio.settings.BT_SOURCE=true;
 }
 
 void loop() {
