@@ -11,6 +11,6 @@ managed_components
 dependencies.lock
 sdkconfig.esp32
 sdkconfig.esp32s3
-sdkconfig.esp32s3
+sdkconfig.esp32s31
 sdkconfig.esp32p4
 sdkconfig.esp32p4_es
