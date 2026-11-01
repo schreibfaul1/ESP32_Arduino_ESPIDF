@@ -5,39 +5,39 @@
 #include "pins_arduino.h"
 
 #ifdef CONFIG_IDF_TARGET_ESP32
-    #define I2S_DOUT   25
-    #define I2S_BCLK   27
-    #define I2S_LRC    26
-    #define SD_MMC_D0  2
-    #define SD_MMC_CLK 14
-    #define SD_MMC_CMD 15
+    #define I2S_DOUT_PIN   25
+    #define I2S_BCLK_PIN   27
+    #define I2S_LRC_PIN    26
+    #define SD_MMC_D0_PIN  2
+    #define SD_MMC_CLK_PIN 14
+    #define SD_MMC_CMD_PIN 15
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-    #define I2S_DOUT   9
-    #define I2S_BCLK   3
-    #define I2S_LRC    1
-    #define SD_MMC_D0  11
-    #define SD_MMC_CLK 13
-    #define SD_MMC_CMD 14
+    #define I2S_DOUT_PIN   9
+    #define I2S_BCLK_PIN   3
+    #define I2S_LRC_PIN    1
+    #define SD_MMC_D0_PIN  11
+    #define SD_MMC_CLK_PIN 13
+    #define SD_MMC_CMD_PIN 14
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S31
-    #define I2S_DOUT   44
-    #define I2S_BCLK   45
-    #define I2S_LRC    46
-    #define SD_MMC_D0  47
-    #define SD_MMC_CLK 48
-    #define SD_MMC_CMD 49
+    #define I2S_DOUT_PIN   44
+    #define I2S_BCLK_PIN   45
+    #define I2S_LRC_PIN    46
+    #define SD_MMC_D0_PIN  47
+    #define SD_MMC_CLK_PIN 48
+    #define SD_MMC_CMD_PIN 49
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32P4
-    #define I2S_DOUT   23
-    #define I2S_BCLK   24
-    #define I2S_LRC    25
-    #define SD_MMC_D0  39
-    #define SD_MMC_CLK 43
-    #define SD_MMC_CMD 44
+    #define I2S_DOUT_PIN   23
+    #define I2S_BCLK_PIN   24
+    #define I2S_LRC_PIN    25
+    #define SD_MMC_D0_PIN  39
+    #define SD_MMC_CLK_PIN 43
+    #define SD_MMC_CMD_PIN 44
 #endif
 
 
@@ -67,11 +67,11 @@ void setup() {
     wifiMulti.addAP(WIFI_SSID, WIFI_PASS);
     wifiMulti.run(); // if there are multiple access points, use the strongest one
     while (WiFi.status() != WL_CONNECTED) delay(1500);
-    pinMode(SD_MMC_D0, INPUT_PULLUP);
+    pinMode(SD_MMC_D0_PIN, INPUT_PULLUP);
 //    SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
 //    SD_MMC.begin("/sdcard", true);
     // audio.settings.SPECTRUM = true;
-    audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
+    audio.setPinout(I2S_BCLK_PIN, I2S_LRC_PIN, I2S_DOUT);
     audio.setVolume(12); // default 0...21
     audio.settings.SPECTRUM=false;
 
@@ -85,8 +85,8 @@ void setup() {
     // audio.connecttohost("http://icecast6.play.cz/radio-xaver.aac");
     // audio.connecttohost("http://0n-70s.radionetz.de/0n-70s.mp3");
 
-    // audio.settings.BT_DEV_NANE = " Pebble V3";
-    // audio.settings.BT_SOURCE=true;
+    audio.settings.BT_DEV_NANE = " Pebble V3";
+    audio.settings.BT_SOURCE=true;
 }
 
 void loop() {
