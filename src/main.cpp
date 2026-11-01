@@ -22,6 +22,15 @@
     #define SD_MMC_CMD 14
 #endif
 
+#ifdef CONFIG_IDF_TARGET_ESP32S31
+    #define I2S_DOUT   44
+    #define I2S_BCLK   45
+    #define I2S_LRC    46
+    #define SD_MMC_D0  47
+    #define SD_MMC_CLK 48
+    #define SD_MMC_CMD 49
+#endif
+
 #ifdef CONFIG_IDF_TARGET_ESP32P4
     #define I2S_DOUT   23
     #define I2S_BCLK   24
@@ -31,14 +40,7 @@
     #define SD_MMC_CMD 44
 #endif
 
-#ifdef CONFIG_IDF_TARGET_ESP32S31
-    #define I2S_DOUT   44
-    #define I2S_BCLK   45
-    #define I2S_LRC    46
-    #define SD_MMC_D0  47
-    #define SD_MMC_CLK 48
-    #define SD_MMC_CMD 49
-#endif
+
 
 Audio     audio;
 WiFiMulti wifiMulti;
@@ -83,8 +85,8 @@ void setup() {
     // audio.connecttohost("http://icecast6.play.cz/radio-xaver.aac");
     // audio.connecttohost("http://0n-70s.radionetz.de/0n-70s.mp3");
 
-    audio.settings.BT_DEV_NANE = " Pebble V3";
-    audio.settings.BT_SOURCE=true;
+    // audio.settings.BT_DEV_NANE = " Pebble V3";
+    // audio.settings.BT_SOURCE=true;
 }
 
 void loop() {
