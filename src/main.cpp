@@ -71,7 +71,7 @@ void setup() {
 //    SD_MMC.setPins(SD_MMC_CLK, SD_MMC_CMD, SD_MMC_D0);
 //    SD_MMC.begin("/sdcard", true);
     // audio.settings.SPECTRUM = true;
-    audio.setPinout(I2S_BCLK_PIN, I2S_LRC_PIN, I2S_DOUT);
+    audio.setPinout(I2S_BCLK_PIN, I2S_LRC_PIN, I2S_DOUT_PIN);
     audio.setVolume(12); // default 0...21
     audio.settings.SPECTRUM=false;
 
